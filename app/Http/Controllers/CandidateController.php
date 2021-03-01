@@ -40,7 +40,7 @@ class CandidateController extends Controller
             $candidate->Technologies()->attach($technology);
         }
 
-        return $candidate;
+        return $this->candidate->with('technologies')->find($candidate->id);
     }
 
     /**
@@ -68,5 +68,9 @@ class CandidateController extends Controller
         $candidate->Technologies()->detach();
         $candidate->delete();
         return 200;
+    }
+
+    public function filterByTechnology(Request $request){
+
     }
 }

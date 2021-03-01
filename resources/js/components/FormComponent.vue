@@ -1,7 +1,7 @@
 <template>
 
     <div class="card">
-        <div class="card-header">Lista De Candidatos</div>
+        <div class="card-header">Cadastro De Candidatos</div>
 
         <div class="card-body">
             
@@ -76,10 +76,10 @@
                 })
 
                 
-                this.name_candidate = '';
-                this.email_candidate = ''; 
-                this.age_candidate = '';
-                this.likedin_candidate = '';
+                // this.name_candidate = '';
+                // this.email_candidate = ''; 
+                // this.age_candidate = '';
+                // this.likedin_candidate = '';
             }
         }
 
