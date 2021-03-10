@@ -1,36 +1,42 @@
 <template>
 
-    <div class="card">
-        <div class="card-header">Cadastro De Candidatos</div>
+    <div class="card mb-4 shadow-sm">
 
-        <div class="card-body">
-            
-            <form action="" v-on:submit.prevent="newCandidate()">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nome</label>
-                    <input type="text" class="form-control" id="name" name="name" v-model="name_candidate">
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email </label>
-                    <input type="email" class="form-control" id="email" name="email" v-model="email_candidate">
-                </div>
+        <div class="card-header">
+            Cadastro De Tarefas
+             
+        </a>
+        </div>
 
-                <div class="input-group  mb-3">
-                    <label for="age" class="form-label">Idade</label>
-                    <input type="text" class="form-control" id="age" name="age" v-model="age_candidate">
+        <div >
+            <div class="card-body">
+                
+                <form action="" v-on:submit.prevent="newTask()">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="name" name="name" v-model="name_task">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email </label>
+                        <input type="email" class="form-control" id="email" name="email" v-model="email_task">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="description" name="description" v-model="description_task"></textarea>
+                    </div>
 
-                    <label for="likedin" class="form-label">Linkedin</label>
-                    <input type="text" class="form-control" id="linkedin" name="url_linkedin" v-model="likedin_candidate">
-                </div>
+                    <p v-if="errors.length">
+                        <b>{{ title_error }}</b>
+                        <ul>
+                        <li v-for="error in errors">{{ error }}</li>
+                        </ul>
+                    </p>
 
-                <div class="mb-3 form-check" v-for="(technology, index) in technologies" :key="technology.id">
-                    <input type="checkbox" class="form-check-input" :id="technology.id" :value="technology.id" v-model="selectedTechnologies">
-                    <label class="form-check-label" :for="technology.id" >{{ technology.name }}</label>
-                </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-
+            </div>
         </div>
     </div>
     
@@ -42,44 +48,55 @@
     export default {
         data() {
             return {
-                name_candidate: '',
-                email_candidate: '',
-                age_candidate: '',
-                likedin_candidate: '',
-                selectedTechnologies: [],
-                technologies: []
+                errors: [],
+                name_task: null,
+                email_task: null,
+                description_task: null,
+                title_error: 'Por favor, corrija o(s) seguinte(s) erro(s):'
             }
         },
         mounted() {
-            axios.get('/getTechnologies').then((response) => {
-                this.technologies = response.data;
-            })
+            //
         },
         methods: {
-            newCandidate(){
+            newTask(){
 
                 const params = {
-                    name: this.name_candidate,
-                    email: this.email_candidate,
-                    age: this.age_candidate,
-                    url_linkedin: this.likedin_candidate,
-                    technologies: this.selectedTechnologies
+                    name: this.name_task,
+                    email: this.email_task,
+                    description: this.description_task
                 }
 
-                console.log(params);
+                this.errors = [];
 
-                axios.post('/candidate', params).then((response) => {
-                    
-                    console.log(response.data);
-                    const candidate = response.data;
-                    this.$emit('new', candidate);
-                })
-
+                if (!this.name_task) {
+                    this.errors.push('O nome é obrigatório.');
+                }
+                if (!this.email_task) {
+                    this.errors.push('A idade é obrigatória.');
+                }
+                if (!this.description_task) {
+                    this.errors.push('A idade é obrigatória.');
+                }
                 
-                // this.name_candidate = '';
-                // this.email_candidate = ''; 
-                // this.age_candidate = '';
-                // this.likedin_candidate = '';
+                if(this.errors.length == 0){
+                    axios.post('/task', params).then((response) => {
+
+                        const task = response.data;
+                        this.$emit('new', task);
+                        
+                        this.name_task = null;
+                        this.email_task = null;
+                        this.description_task = null;
+
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.title_error = 'Tente novamente.';
+                        this.errors.push('Tivemos problemas com nosso servidor, e não conseguimos finalizar o cadastro. :(');
+                    })
+                }
+                
             }
         }
 

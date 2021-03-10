@@ -13,13 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+                    
+Route::get('/', 'TaskController@index')->name('task.index');
+Route::get('/tasks', 'TaskController@all')->name('task.all');
+Route::post('/task', 'TaskController@store')->name('task.store');
+Route::get('/task_pending/{task}', 'TaskController@pending')->name('task.pending');
+Route::get('/task_done/{task}', 'TaskController@done')->name('task.done');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/getTechnologies', 'HomeController@getTechnologies')->name('getTechnologies');
-
-Route::apiResource('candidate', 'CandidateController');

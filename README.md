@@ -1,6 +1,6 @@
 ## Proejto Teste Icetec
 
-* Projeto feito com Framework Laravel + VueJs
+* Projeto feito com Framework Laravel + VueJs + Mysql
 
 * Para instalaçao e iniciaçao do projeto
 
@@ -10,7 +10,3 @@
 * php >7.0
 * php artisan migrate --seed
 * php artisan serve
-
-* Criar arquivo .env A seed vai criar o usuário: recrutador@gmail.com  senha: recrutador 
-
-* A seed também vai preencher a tabla Technologies com os valores passado no exame

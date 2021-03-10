@@ -1,24 +1,29 @@
 <template>
     <div id="app">
 
-        <form-component
-             @new="addCandidate"
-        >
-        </form-component>
-
-
-        <div class="card">
-            <div class="card-header">Lista De Candidatos</div>
-
-            <candidate-component 
-                v-for="(candidate, index) in candidates" 
-                :key="candidate.id" 
-                :candidate="candidate" 
-                @delete="deleteCandidate(index)"
-                @update="updateCandidate(index, candidate)">
-            </candidate-component>
-
+        
+        <div class="col-md-12">
+           <form-component @new="addTask"></form-component>
         </div>
+        
+        <div class="col-md-12">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">Lista De Tarefas</div>
+                <div class="card-body">
+            
+                <task-component 
+                    v-for="(task, index) in tasks" 
+                    :key="task.id" 
+                    :task="task" 
+                    @update="updateTask(index, task)"
+                    >
+                </task-component>
+                </div>
+            </div>
+        </div> 
+
+        
+        <modal-component v-if="modalOpen" :modalOpen="modalOpen" ></modal-component>
 
     </div>
     
@@ -28,27 +33,29 @@
     export default {
         data() {
             return {
-                candidates: []
+                tasks: [],
+                modalOpen: false
             }
         },
         mounted() {
-            axios.get('/candidate').then((response) => {
-                this.candidates = response.data;
-                console.log(this.candidates);
+            axios.get('/tasks').then((response) => {
+                //response.data;
+                this.tasks = response.data;
+                console.log(this.tasks);;
             })
         },
         methods: {
-            addCandidate(candidate){
-                
-                this.candidates.push(candidate);
+            addTask(task){   
+                this.tasks.push(task);
             },
-
-            deleteCandidate(index){
-                this.candidates.splice(index, 1);
+            updateTask(index, task){
+                this.openModal()
+                this.tasks[index] = task;
+                //this.tasks.splice(index, 1);
             },
-
-            updateCandidate(index, candidate){
-                this.candidates[index] = candidate;
+            openModal() {
+                this.modalOpen = !this.modalOpen;
+                console.log(this.modalOpen);
             }
         }
     }
