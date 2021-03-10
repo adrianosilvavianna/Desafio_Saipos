@@ -21,7 +21,6 @@
                 </div>
             </div>
         </div> 
-
         
         <modal-component v-if="modalOpen" :modalOpen="modalOpen" ></modal-component>
 
@@ -39,9 +38,9 @@
         },
         mounted() {
             axios.get('/tasks').then((response) => {
-                //response.data;
+                
                 this.tasks = response.data;
-                console.log(this.tasks);;
+
             })
         },
         methods: {
@@ -51,11 +50,10 @@
             updateTask(index, task){
                 this.openModal()
                 this.tasks[index] = task;
-                //this.tasks.splice(index, 1);
             },
             openModal() {
                 this.modalOpen = !this.modalOpen;
-                console.log(this.modalOpen);
+
             }
         }
     }

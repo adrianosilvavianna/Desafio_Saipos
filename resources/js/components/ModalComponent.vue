@@ -17,7 +17,12 @@
             </div>
             <div class="modal-body">
                 
-                <p v-show="message_validate">{{ message_validate }}</p>
+                 <p v-if="errors.length">
+                        <ul>
+                            <li v-for="error in errors">{{ error }}</li>
+                        </ul>
+                    </p>
+
                 <div class="form-group">
                     <input type="password" class="form-control" placeholder="Senha" v-model="password">
                 </div>
@@ -25,7 +30,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="onClickClose()">Close</button>
-                <button type="button" class="btn btn-primary" v-on:click="onClickClose()">Enviar</button>
+                <button type="button" class="btn btn-primary" v-on:click="sendPassword()">Enviar</button>
             </div>
             </div>
         </div>
@@ -42,13 +47,12 @@
                 return {
                     password: '',
                     validate_password: "TrabalheNaSaipos",
-                    message_validate: null
+                    message_validate: null,
+                    errors: []
                 }
             },
 
             mounted() {
-                console.log('entrou aqui' + this.modalOpen);
-                
                 $('#exampleModalCenter').modal('show');
             },
             methods: {
@@ -56,11 +60,12 @@
                     if(this.password == this.validate_password){
                         this.$emit("validate", true);      
                     }else{
-                        this.message_validate = 'Senha Inválida';
+                        console.log('teste')
+                        this.errors.push('Senha Inválida');
                     }
                 },
                 onClickClose() {
-                  this.$emit("input", !this.modalOpen);
+                  this.modalOpen != this.modalOpen;
                 }            
             }
         };

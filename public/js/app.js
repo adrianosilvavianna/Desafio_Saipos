@@ -1938,7 +1938,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1950,10 +1949,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('/tasks').then(function (response) {
-      //response.data;
       _this.tasks = response.data;
-      console.log(_this.tasks);
-      ;
     });
   },
   methods: {
@@ -1962,11 +1958,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateTask: function updateTask(index, task) {
       this.openModal();
-      this.tasks[index] = task; //this.tasks.splice(index, 1);
+      this.tasks[index] = task;
     },
     openModal: function openModal() {
       this.modalOpen = !this.modalOpen;
-      console.log(this.modalOpen);
     }
   }
 });
@@ -2129,17 +2124,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['modalOpen'],
   data: function data() {
     return {
       password: '',
       validate_password: "TrabalheNaSaipos",
-      message_validate: null
+      message_validate: null,
+      errors: []
     };
   },
   mounted: function mounted() {
-    console.log('entrou aqui' + this.modalOpen);
     $('#exampleModalCenter').modal('show');
   },
   methods: {
@@ -2147,11 +2147,12 @@ __webpack_require__.r(__webpack_exports__);
       if (this.password == this.validate_password) {
         this.$emit("validate", true);
       } else {
-        this.message_validate = 'Senha Inválida';
+        console.log('teste');
+        this.errors.push('Senha Inválida');
       }
     },
     onClickClose: function onClickClose() {
-      this.$emit("input", !this.modalOpen);
+      this.modalOpen != this.modalOpen;
     }
   }
 });
@@ -38792,20 +38793,17 @@ var render = function() {
             _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
-              _c(
-                "p",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.message_validate,
-                      expression: "message_validate"
-                    }
-                  ]
-                },
-                [_vm._v(_vm._s(_vm.message_validate))]
-              ),
+              _vm.errors.length
+                ? _c("p", [
+                    _c(
+                      "ul",
+                      _vm._l(_vm.errors, function(error) {
+                        return _c("li", [_vm._v(_vm._s(error))])
+                      }),
+                      0
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
                 _c("input", {
@@ -38854,7 +38852,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.onClickClose()
+                      return _vm.sendPassword()
                     }
                   }
                 },
